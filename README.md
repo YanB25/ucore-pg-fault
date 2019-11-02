@@ -45,3 +45,7 @@ ebp:0xc012aff8 eip:0xc0100096 args:0xc010ac98 0xc010aca0 0xc0102072 0xc010acbf
 
 原因是在`check_pgfault`运行中，在访问 0x100地址时，没有触发page fault。
 进而导致pg_dir[0]依旧保持为空（0x0），导致free_page(pg_dir[0])企图释放0号物理页框。
+
+## 一些猜想
+是否 End 不能超过 0xc01b5000?
+当End超过这个值后（例如多分配一个页），达到0xc01b5020时，就会出现上述的错误。
